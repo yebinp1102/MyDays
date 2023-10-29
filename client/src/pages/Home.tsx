@@ -1,9 +1,12 @@
+import UserWidget from "../components/UserWidget"
 
 type Props = {}
 
 const Home = (props: Props) => {
   return (
-    <div>Home</div>
+    <div>
+      <UserWidget />
+    </div>
   )
 }
 
