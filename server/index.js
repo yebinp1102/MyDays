@@ -10,6 +10,7 @@ import multer from 'multer';
 import mongoose from 'mongoose';
 import { register } from './controllers/auth.js';
 import authRoutes from './routes/auth.js';
+import userRoutes from "./routes/user.js";
 
 // configurations
 const __filename = fileURLToPath(import.meta.url);
@@ -41,6 +42,7 @@ app.post("/auth/register", upload.single("picture"), register);
 
 // Routes
 app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 
 // mongoose 
 const PORT = process.env.PORT || 6001

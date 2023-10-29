@@ -10,7 +10,7 @@ const UserWidget = () => {
   const {user} = useAppSelector(state => state.user);
 
   return (
-    <div className='bg-primary w-[450px] rounded-2xl flex flex-col'>
+    <div className='bg-primary w-[400px] rounded-2xl flex flex-col'>
       <div className='p-5'>
         {/* section 1 */}
         <div className=' border-b-2 border-b-white flex justify-between items-center pb-5'>
