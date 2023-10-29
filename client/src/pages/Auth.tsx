@@ -1,22 +1,53 @@
-import { motion } from "framer-motion"
 import Shape from '../assets/Shape01.png'
 import {BsFillEyeFill} from 'react-icons/bs'
 import {AiFillEyeInvisible} from 'react-icons/ai'
-import { useState } from "react"
+import React, { useState } from "react"
 import useMediaQuery from "../hooks/useMediaQuery"
+import { useAppDispatch } from '../redux/hooks'
+import { register, login } from '../redux/slices/userSlice'
+import { useNavigate } from 'react-router-dom'
 
 
-type Props = {}
-
-const Register = (props: Props) => {
+const Auth = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [showPwd, setShowPwd] = useState<boolean>(false);
   const [isLoginPage, setIsLoginPage] = useState<boolean>(false);
 
   const isAboveMediaScreen = useMediaQuery("(min-width: 1080px)")
-  console.log(isAboveMediaScreen);
 
-  const handleRegister = () => {
+  const resetUserInfo = () => {
+    setName("")
+    setEmail("")
+    setPassword("");
+  }
 
+  const handleRegister = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    try{
+      const userInfo = {name, email, password}
+      await dispatch(register(userInfo));
+      alert("회원가입 되었습니다. 로그인 해주세요.")
+      resetUserInfo();
+      setIsLoginPage(true);
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  const handleLogin = async(e:React.SyntheticEvent) => {
+    e.preventDefault();
+    try{
+      const userInfo = {email, password};
+      await dispatch(login(userInfo));
+      resetUserInfo();
+      navigate("/");
+    }catch(err){
+      console.log(err)
+    }
   }
 
   return (
@@ -58,25 +89,31 @@ const Register = (props: Props) => {
               {/* FIELDS */}
               <form 
                 className="flex flex-col w-full gap-12 mt-32 mb-20"
-                onSubmit={handleRegister}
+                onSubmit={isLoginPage ? handleLogin : handleRegister}
               >
                 {!isLoginPage && 
                   <input 
                     placeholder="Name" 
-                    className="border-b-[1px] p-1 placeholder:text-gray-300"
+                    className="border-b-[1px] p-2 placeholder:text-xl placeholder:text-gray-300"
                     type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 }
                 <input 
                   placeholder="Email" 
                   className="border-b-[1px] p-2 placeholder:text-xl placeholder:text-gray-300" 
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <div className="relative">
                   <input 
                     placeholder="Password" 
                     className="border-b-[1px] w-full p-2 placeholder:text-xl placeholder:text-gray-300" 
                     type={showPwd ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                   <div className=" absolute top-3 right-0">
                     {showPwd ? 
@@ -132,25 +169,31 @@ const Register = (props: Props) => {
               {/* FIELDS */}
               <form 
                 className="flex flex-col w-full gap-12 mt-20 mb-20"
-                onSubmit={handleRegister}
+                onSubmit={isLoginPage ? handleLogin : handleRegister}
               >
                 {!isLoginPage && 
                   <input 
                   placeholder="Name" 
                   className="border-b-[1px] p-1 placeholder:text-gray-300"
                   type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
                 }
                 <input 
                   placeholder="Email" 
                   className="border-b-[1px] p-1 placeholder:text-gray-300" 
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <div className="relative">
                   <input 
                     placeholder="Password" 
                     className="border-b-[1px] w-full p-1 placeholder:text-gray-300" 
                     type={showPwd ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                   <div className=" absolute top-2 right-1">
                     {showPwd ? 
@@ -179,4 +222,4 @@ const Register = (props: Props) => {
   )
 }
 
-export default Register
+export default Auth

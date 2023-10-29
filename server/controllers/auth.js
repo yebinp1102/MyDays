@@ -11,16 +11,13 @@ export const register = async(req, res) => {
     const hashedPwd = await bcrypt.hash(password, salt); // salt로 비번 암호화
 
     // DB에 비번을 저장할 때는 암호화된 것으로 저장
-    const newUser = new User({
+    const newUser = await User.create({
       name,
       email,
       password : hashedPwd,
-      location,
-      job,
-      picturePath
     })
-    const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
+    
+    res.status(201).json({name, email});
   }catch(err){
     res.status(500).json({error: err.message, message: "Register failure"})
   }
