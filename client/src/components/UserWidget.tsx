@@ -3,14 +3,26 @@ import {BiShoppingBag} from 'react-icons/bi';
 import {BsTwitter, BsLinkedin} from 'react-icons/bs';
 import {LiaUserCogSolid} from 'react-icons/lia';
 import { useAppSelector } from '../redux/hooks';
-import { useNavigate } from 'react-router';
 
 const UserWidget = () => {
-  const navigate = useNavigate();
   const {user} = useAppSelector(state => state.user);
 
+  if(!user){
+    return (
+      <div 
+        className='bg-primary w-[400px] h-[500px] flex items-center justify-center
+        rounded-2xl mt-10 text-lg text-gray-600'
+      >
+        <p>
+          로그인 하고 더 많은 기능을 즐겨보세요. <br/>
+          Please Sign up and enjoy more days.
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <div className='bg-primary w-[400px] rounded-2xl flex flex-col'>
+    <div className='bg-primary w-[400px] rounded-2xl flex flex-col mt-10'>
       <div className='p-5'>
         {/* section 1 */}
         <div className=' border-b-2 border-b-white flex justify-between items-center pb-5'>
@@ -19,9 +31,13 @@ const UserWidget = () => {
             <div className='bg-gray-400 rounded-[50%] w-16 h-16 mr-3'></div>
             <div>
               {/* Profle name */}
-              <div className=' font-bold text-green-700 text-lg'>Sample Person</div>
+              <div className=' font-bold text-green-700 text-lg'>
+              {user?.user.name.length ? user?.user.name : "Sample person"}
+              </div>
               {/* friends */}
-              <div className='text-gray-500'>0 friends</div>
+              <div className='text-gray-500'>
+                {user?.user.friends.length} friends
+              </div>
             </div>
           </div>
           
@@ -32,12 +48,12 @@ const UserWidget = () => {
         <div className=' border-b-2 border-b-white flex flex-col py-5'>
           <div className='flex gap-2 text-gray-500 mb-2'>
             <MdOutlineLocationOn size={28} color={"green"}/>
-            <p>sample location</p>
+            <p>{user?.user.location.length ? user?.user.location : "Not filled yet"}</p>
           </div>
 
           <div className='flex gap-2 text-gray-500'>
             <BiShoppingBag size={28} color={"green"}/>
-            <p>sample job</p>
+            <p>{user?.user.job.length ? user?.user.job : "Not filled yet"}</p>
           </div>
 
         </div>
