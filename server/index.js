@@ -11,6 +11,8 @@ import mongoose from 'mongoose';
 import { register } from './controllers/auth.js';
 import authRoutes from './routes/auth.js';
 import userRoutes from "./routes/user.js";
+import { verifyToken } from './middleware/auth.js';
+import { createPost } from './controllers/post.js';
 
 // configurations
 const __filename = fileURLToPath(import.meta.url);
@@ -39,6 +41,7 @@ const upload = multer({storage});
 
 // Routes with files - save picture in local using middleware
 app.post("/auth/register", upload.single("picture"), register);
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 // Routes
 app.use("/auth", authRoutes);
