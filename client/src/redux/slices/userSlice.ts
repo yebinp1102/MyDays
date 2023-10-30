@@ -1,19 +1,20 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { UserType } from '../../types/User'
 
 // axios.defaults.baseURL = "http://localhost:5000"
 
 export interface CounterState {
   isLoading: boolean,
   error: string | null,
-  user: Object,
+  user: UserType | null,
 }
 
 const initialState: CounterState = {
   isLoading: false,
   error: null,
-  user: {},
+  user: localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem('userInfo')!) : null,
 }
 
 declare type ApiError = {
@@ -41,11 +42,15 @@ export const login = createAsyncThunk('auth/login', async(userInfo: {email:strin
   try{
     const {email, password} = userInfo;
     const res = await axios.post('/auth/login', {email, password});
-    console.log(res.data);
+    localStorage.setItem('userInfo', JSON.stringify(res.data));
     return res.data
   }catch(err){
     return getError(err as ApiError);
   }
+})
+
+export const logout = createAsyncThunk('auth/logout', async() => {
+  localStorage.removeItem('userInfo');
 })
 
 export const userSlice = createSlice({
@@ -64,7 +69,7 @@ export const userSlice = createSlice({
       .addCase(register.rejected, (state, action: PayloadAction<any>) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.user = {}
+        state.user = null
       })
       .addCase(login.pending, (state) => {
         state.isLoading = true
@@ -77,7 +82,10 @@ export const userSlice = createSlice({
       .addCase(login.rejected, (state, action: PayloadAction<any>) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.user = {}
+        state.user = null;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
       })
   },
 })
