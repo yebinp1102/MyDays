@@ -1,5 +1,6 @@
 export type UserType = {
   user : {
+    _id: string,
     name: string,
     email: string,
     location: string,

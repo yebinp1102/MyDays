@@ -11,7 +11,7 @@ const UserWidget = () => {
     return (
       <div 
         className='bg-primary w-[400px] h-[500px] flex items-center justify-center
-        rounded-2xl mt-10 text-lg text-gray-600'
+        rounded-2xl text-lg text-gray-600'
       >
         <p>
           로그인 하고 더 많은 기능을 즐겨보세요. <br/>
@@ -22,7 +22,7 @@ const UserWidget = () => {
   }
 
   return (
-    <div className='bg-primary w-[400px] rounded-2xl flex flex-col mt-10'>
+    <div className='bg-primary w-[400px] rounded-2xl flex flex-col'>
       <div className='p-5'>
         {/* section 1 */}
         <div className=' border-b-2 border-b-white flex justify-between items-center pb-5'>
