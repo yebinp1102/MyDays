@@ -53,6 +53,21 @@ export const logout = createAsyncThunk('auth/logout', async() => {
   localStorage.removeItem('userInfo');
 })
 
+
+export const addRemoveFriend = createAsyncThunk("/users/addRemoveFriend", async(data : {userId: string | undefined, friendId: string}, {getState}) => {
+  try{
+    const {user} = getState() as any;
+    const token = user.user.token;
+    const {userId, friendId} = data;
+    const res = await axios.post(`users/${userId}/${friendId}`, { headers: {Authorization: `Bearer ${token}`}} )
+    console.log(res.data);
+    // localStorage.setItem('userInfo', JSON.stringify(res.data));
+    return res.data;
+  }catch(err){
+    return getError(err as ApiError);
+  }
+})
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -85,6 +100,19 @@ export const userSlice = createSlice({
         state.user = null;
       })
       .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+      })
+      .addCase(addRemoveFriend.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addRemoveFriend.fulfilled, (state, action: PayloadAction<any>) => {
+        state.isLoading = false;
+        // state.user = action.payload;
+        state.error = null;
+      })
+      .addCase(addRemoveFriend.rejected, (state, action: PayloadAction<any>) => {
+        state.isLoading = false;
+        state.error = action.payload;
         state.user = null;
       })
   },
