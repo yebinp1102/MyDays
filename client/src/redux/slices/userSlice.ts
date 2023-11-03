@@ -5,16 +5,26 @@ import { UserType } from '../../types/User'
 
 // axios.defaults.baseURL = "http://localhost:5000"
 
+type FriendType = {
+  _id: string,
+  picturePath: string,
+  name: string,
+  location: string,
+  job: string,
+}
+
 export interface CounterState {
   isLoading: boolean,
   error: string | null,
   user: UserType | null,
+  friends: [FriendType] | null,
 }
 
 const initialState: CounterState = {
   isLoading: false,
   error: null,
   user: localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem('userInfo')!) : null,
+  friends: null,
 }
 
 declare type ApiError = {
@@ -53,6 +63,39 @@ export const logout = createAsyncThunk('auth/logout', async() => {
   localStorage.removeItem('userInfo');
 })
 
+
+export const addRemoveFriend = createAsyncThunk("/users/addRemoveFriend", async({friendId} : {friendId: string}, {getState}) => {
+  try{
+    const {user} = getState() as any;
+    const {token} = user.user;
+    const userId = user.user.user._id;
+    const res = await axios.get(`users/${userId}/${friendId}`, {headers: {Authorization: `Bearer ${token}`}} )
+
+    const formData = {
+      token,
+      user: res.data
+    }
+    localStorage.setItem('userInfo', JSON.stringify(formData));
+    return formData;
+  }catch(err){
+    console.log(err);
+    return getError(err as ApiError);
+  }
+})
+
+export const getFriends = createAsyncThunk("/users/getFriends", async(_, {getState}) => {
+  try{
+    const {user} = getState() as any;
+    const {token} = user.user;
+    const id = user.user.user._id;
+    const res = await axios.get(`/users/${id}/friends`, {headers: {Authorization: `Bearer ${token}`}});
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return getError(err as ApiError);
+  }
+})
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -86,6 +129,31 @@ export const userSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
+      })
+      .addCase(addRemoveFriend.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addRemoveFriend.fulfilled, (state, action: PayloadAction<any>) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        state.error = null;
+      })
+      .addCase(addRemoveFriend.rejected, (state, action: PayloadAction<any>) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.user = null;
+      })
+      .addCase(getFriends.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getFriends.fulfilled, (state, action: PayloadAction<any>) => {
+        state.isLoading = false;
+        state.friends = action.payload;
+        state.error = null;
+      })
+      .addCase(getFriends.rejected, (state, action: PayloadAction<any>) => {
+        state.isLoading = false;
+        state.error = action.payload
       })
   },
 })

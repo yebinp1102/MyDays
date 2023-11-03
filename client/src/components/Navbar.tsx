@@ -9,7 +9,7 @@ const Navbar = () => {
   const {user} = useAppSelector(state => state.user);
 
   return (
-    <div className='h-[80px] bg-primary'>
+    <div className='h-[80px] bg-primary mb-10'>
       <div className='w-5/6 mx-auto h-full flex items-center justify-between'>
         {/* LOGO */}
         <div className="font-bold font-sunflower text-2xl text-green-700">
@@ -28,7 +28,7 @@ const Navbar = () => {
           ): (
             <div className='flex items-center gap-4 text-gray-500'>
               <div className=''>
-                {user.user.name}
+                {user && user.user.name}
               </div>
               {/* LOGOUT */}
               <button 
