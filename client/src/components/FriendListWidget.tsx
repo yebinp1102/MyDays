@@ -17,7 +17,7 @@ const FriendListWidget = (props: Props) => {
   
   return (
     <div className="bg-primary rounded-2xl p-6">
-      <p className="text-green-700 font-bold text-xl mb-4">Friend List</p>
+      <p className="text-green-700 font-bold text-xl mb-4">My Friend List</p>
       <div className="">
         {friends.map((friend) => (
           <div className="border-t-2 pt-4">

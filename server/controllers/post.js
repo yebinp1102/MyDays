@@ -7,7 +7,7 @@ export const createPost = async (req, res) => {
   try{
     const {userId, description, picturePath} = req.body;
     const user = await User.findById(userId);
-    const newPost = await Post.create({
+    await Post.create({
       userId,
       name: user.name,
       location: user.location,
@@ -18,7 +18,8 @@ export const createPost = async (req, res) => {
       comments: []
     })
 
-    res.status(201).json(newPost);
+    const allPosts = await Post.find();
+    res.status(201).json(allPosts);
 
   }catch(err){
     res.status(400).json({error: err.message, message: "Post creation failure"})
