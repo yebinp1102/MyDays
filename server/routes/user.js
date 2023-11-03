@@ -12,7 +12,7 @@ router.get('/:id', verifyToken, getUser);
 router.get('/:id/friends', verifyToken, getUserFriends)
 
 // add or remove friend from friends list
-router.post('/:id/:friendId', verifyToken, addRemoveFriends)
+router.get('/:id/:friendId', verifyToken, addRemoveFriends)
 
 
 export default router;

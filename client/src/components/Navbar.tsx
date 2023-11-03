@@ -28,7 +28,7 @@ const Navbar = () => {
           ): (
             <div className='flex items-center gap-4 text-gray-500'>
               <div className=''>
-                {user.user.name}
+                {user && user.user.name}
               </div>
               {/* LOGOUT */}
               <button 

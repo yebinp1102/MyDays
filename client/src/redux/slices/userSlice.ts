@@ -54,16 +54,21 @@ export const logout = createAsyncThunk('auth/logout', async() => {
 })
 
 
-export const addRemoveFriend = createAsyncThunk("/users/addRemoveFriend", async(data : {userId: string | undefined, friendId: string}, {getState}) => {
+export const addRemoveFriend = createAsyncThunk("/users/addRemoveFriend", async({friendId} : {friendId: string}, {getState}) => {
   try{
     const {user} = getState() as any;
-    const token = user.user.token;
-    const {userId, friendId} = data;
-    const res = await axios.post(`users/${userId}/${friendId}`, { headers: {Authorization: `Bearer ${token}`}} )
-    console.log(res.data);
-    // localStorage.setItem('userInfo', JSON.stringify(res.data));
-    return res.data;
+    const {token} = user.user;
+    const userId = user.user.user._id;
+    const res = await axios.get(`users/${userId}/${friendId}`, {headers: {Authorization: `Bearer ${token}`}} )
+
+    const formData = {
+      token,
+      user: res.data
+    }
+    localStorage.setItem('userInfo', JSON.stringify(formData));
+    return formData;
   }catch(err){
+    console.log(err);
     return getError(err as ApiError);
   }
 })
@@ -107,7 +112,7 @@ export const userSlice = createSlice({
       })
       .addCase(addRemoveFriend.fulfilled, (state, action: PayloadAction<any>) => {
         state.isLoading = false;
-        // state.user = action.payload;
+        state.user = action.payload;
         state.error = null;
       })
       .addCase(addRemoveFriend.rejected, (state, action: PayloadAction<any>) => {

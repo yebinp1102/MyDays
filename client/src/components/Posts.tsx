@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useAppSelector } from '../redux/hooks';
 import { getPosts } from '../redux/slices/postSlice.ts';
@@ -24,6 +24,7 @@ const Posts = ({}: Props) => {
   if(!posts) return;
 
   return (
+    
     <div className='mt-5 flex flex-col gap-5'>
       {posts.map(({
         _id,

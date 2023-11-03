@@ -19,12 +19,8 @@ const Friend = ({friendId, name, subtitle} : Props) => {
 
   const isFriend = friends?.find((friend) => friend === friendId);
 
-  const handleFriendList = async() => {
-    const data = {
-      userId : user?.user._id,
-      friendId
-    }
-    await dispatch(addRemoveFriend(data));
+  const handleAddRemoveFriend = async() => {
+    if(friendId) await dispatch(addRemoveFriend({friendId}));
   }
 
   if(!friends) return;
@@ -46,13 +42,15 @@ const Friend = ({friendId, name, subtitle} : Props) => {
 
       {/* Icon */}
       <div>
-        <div className="bg-green-700 p-2 rounded-[50%] cursor-pointer" onClick={() => handleFriendList}>
-          {isFriend ? (
-            <BsFillPersonDashFill color={"white"} size={20}/>
-          ) : (
-            <BsFillPersonPlusFill color={"white"} size={20} />
-          )}
-        </div>
+        {friendId !== user.user._id && (
+          <div className="bg-green-700 p-2 rounded-[50%] cursor-pointer" onClick={() => handleAddRemoveFriend()}>
+            {isFriend ? (
+              <BsFillPersonDashFill color={"white"} size={20}/>
+            ) : (
+              <BsFillPersonPlusFill color={"white"} size={20} />
+            )}
+          </div>
+        )}
       </div>
     </div>
   )
