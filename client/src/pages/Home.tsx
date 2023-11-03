@@ -1,4 +1,4 @@
-import Friend from "../components/Friend"
+import FriendListWidget from "../components/FriendListWidget"
 import MyPostWidget from "../components/MyPostWidget"
 import Navbar from "../components/Navbar"
 import Posts from "../components/Posts"
@@ -13,12 +13,17 @@ const Home = () => {
     <div className="w-full bg-gray-500 ">
       <Navbar />
       <div className="w-5/6 mx-auto flex gap-10">
-        {isAboveMediumScreen && <UserWidget />}
+        {isAboveMediumScreen && ( 
+          <div>
+            <UserWidget />
+            <FriendListWidget />
+          </div>  
+        )}
         <div className="w-full flex flex-col">
           <MyPostWidget />
           <Posts />
         </div>
-        <UserWidget />
+        {/* {isAboveMediumScreen && <FriendListWidget />} */}
       </div>
     </div>
   )

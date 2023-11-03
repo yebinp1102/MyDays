@@ -6,7 +6,7 @@ export type UserType = {
     location: string,
     job: string,
     friends: [string],
-    picturePath: string
+    picturePath: string,
   },
   token: string,
 }

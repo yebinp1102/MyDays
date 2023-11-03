@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router"
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {BsFillPersonPlusFill, BsFillPersonDashFill} from 'react-icons/bs';
-import { addRemoveFriend } from "../redux/slices/userSlice";
+import { addRemoveFriend, getFriends } from "../redux/slices/userSlice";
 
 type Props = {
   friendId?: string,
@@ -20,7 +20,11 @@ const Friend = ({friendId, name, subtitle} : Props) => {
   const isFriend = friends?.find((friend) => friend === friendId);
 
   const handleAddRemoveFriend = async() => {
-    if(friendId) await dispatch(addRemoveFriend({friendId}));
+    if(friendId){ 
+      await dispatch(addRemoveFriend({friendId}));
+      dispatch(getFriends());
+    }
+
   }
 
   if(!friends) return;
