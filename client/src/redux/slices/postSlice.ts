@@ -78,6 +78,19 @@ export const LikePost = createAsyncThunk('/posts/like', async(bodyData: {postId:
   }
 })
 
+export const getUserPosts = createAsyncThunk("/profile/getAll", async({userId} : {userId?: string}, {getState}) => {
+  try{
+    const {user} = getState() as any;
+    const token = user.user.token;
+    const res = await axios.get(`/posts/${userId}`, {headers: {Authorization: `Bearer ${token}`}})
+    console.log(res.data);
+    return res.data;
+  }catch(err){
+    console.log(err);
+    return getError(err as ApiError);
+  }
+})
+
 
 export const postSlice = createSlice({
   name: 'post',
@@ -116,7 +129,18 @@ export const postSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     })
-    
+    .addCase(getUserPosts.pending, (state) => {
+      state.isLoading = true
+    })
+    .addCase(getUserPosts.fulfilled, (state, action: PayloadAction<any>) =>{
+      state.isLoading = false;
+      state.posts = action.payload;
+      state.error = null;
+    })
+    .addCase(getUserPosts.rejected, (state, action: PayloadAction<any>) =>{
+      state.isLoading = false;
+      state.error = action.payload;
+    })
   }
 })
 

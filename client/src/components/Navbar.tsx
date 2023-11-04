@@ -12,7 +12,7 @@ const Navbar = () => {
     <div className='h-[80px] bg-primary mb-10'>
       <div className='w-5/6 mx-auto h-full flex items-center justify-between'>
         {/* LOGO */}
-        <div className="font-bold font-sunflower text-2xl text-green-700">
+        <div className="font-bold font-sunflower text-2xl text-green-700 cursor-pointer" onClick={() => navigate("/")}>
           MyDays
         </div>
 

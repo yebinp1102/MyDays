@@ -16,20 +16,19 @@ const Home = () => {
   if(!user) navigate('/auth');
 
   return (
-    <div className="w-full bg-gray-500 ">
+    <div className="w-full">
       <Navbar />
       <div className="w-5/6 mx-auto flex gap-10">
         {isAboveMediumScreen && ( 
           <div>
-            <UserWidget />
+            <UserWidget user={user?.user} />
             <FriendListWidget />
           </div>  
         )}
         <div className="w-full flex flex-col">
           <MyPostWidget />
-          <Posts />
+          <Posts isProfile={false} />
         </div>
-        {/* {isAboveMediumScreen && <FriendListWidget />} */}
       </div>
     </div>
   )

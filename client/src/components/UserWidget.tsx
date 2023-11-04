@@ -2,12 +2,21 @@ import {MdOutlineLocationOn} from 'react-icons/md';
 import {BiShoppingBag} from 'react-icons/bi';
 import {BsTwitter, BsLinkedin} from 'react-icons/bs';
 import {LiaUserCogSolid} from 'react-icons/lia';
-import { useAppSelector } from '../redux/hooks';
 
-const UserWidget = () => {
-  const {user} = useAppSelector(state => state.user);
+type Props = {
+  user: {
+    _id: string,
+    name: string,
+    location: string,
+    job: string,
+    friends: [string],
+    picturePath: string,
+  }
+}
 
-  if(!user){
+const UserWidget = (props: Props) => {
+
+  if(!props.user){
     return (
       <div 
         className='bg-primary w-[400px] h-[500px] flex items-center justify-center
@@ -32,11 +41,11 @@ const UserWidget = () => {
             <div>
               {/* Profle name */}
               <div className=' font-bold text-green-700 text-lg'>
-              {user?.user.name.length ? user?.user.name : "Sample person"}
+              {props.user.name ? props.user.name : "Sample person"}
               </div>
               {/* friends */}
               <div className='text-gray-500'>
-                {user?.user.friends.length} friends
+                {props.user.friends.length}friends
               </div>
             </div>
           </div>
@@ -48,12 +57,12 @@ const UserWidget = () => {
         <div className=' border-b-2 border-b-white flex flex-col py-5'>
           <div className='flex gap-2 text-gray-500 mb-2'>
             <MdOutlineLocationOn size={28} color={"green"}/>
-            <p>{user?.user.location.length ? user?.user.location : "Not filled yet"}</p>
+            <p>{props.user.location.length ? props.user.location : "Not filled yet"}</p>
           </div>
 
           <div className='flex gap-2 text-gray-500'>
             <BiShoppingBag size={28} color={"green"}/>
-            <p>{user?.user.job.length ? user?.user.job : "Not filled yet"}</p>
+            <p>{props.user.job.length ? props.user.job : "Not filled yet"}</p>
           </div>
 
         </div>

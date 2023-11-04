@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/', verifyToken, getFeedPosts);
 
 // Grab only specific person's posts
-router.get("/:userId/posts", verifyToken, getUserPosts);
+router.get("/:userId", verifyToken, getUserPosts);
 
 // liking or unliking the post
 router.post("/:id/like", verifyToken, likePost);

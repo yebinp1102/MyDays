@@ -1,31 +1,31 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useAppSelector } from '../redux/hooks';
-import { getPosts } from '../redux/slices/postSlice.ts';
+import { getPosts, getUserPosts } from '../redux/slices/postSlice.ts';
 import Post from './Post.tsx';
 
 type Props = {
+  userId?: string,
+  isProfile: boolean
 }
 
-const Posts = ({}: Props) => {
-  const dispatch = useDispatch();
+const Posts = (props: Props) => {
+  const dispatch = useDispatch<any>();
   const {posts} = useAppSelector(state => state.post);
-  const [isProfile, setIsProfile] = useState<boolean>(false);
 
   useEffect(() => {
-    if(isProfile){
-      dispatch(getUserPosts());
+    if(props.isProfile){
+      dispatch(getUserPosts({userId: props.userId}));
     }else{
       dispatch(getPosts());
     }
-    // eslint-disable-line react-hooks/exhaustive-deps
   },[]);
 
   if(!posts) return;
 
   return (
     
-    <div className='mt-5 flex flex-col gap-5'>
+    <div className='flex flex-col gap-5'>
       {posts.map(({
         _id,
         userId,

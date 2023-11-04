@@ -5,7 +5,15 @@ export const getUser = async(req, res) => {
   try{
     const {id} = req.params;
     const user = await User.findById(id);
-    res.status(200).json(user);
+
+    res.status(200).json({
+      _id: user._id,
+        name: user.name,
+        location: user.location,
+        job: user.job,
+        friends: user.friends,
+        picturePath: user.picturePath
+    });
   }catch(err){
     res.status(404).json({error: err.message, message: "Got an error while finding user information."})
   }
