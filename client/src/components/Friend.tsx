@@ -31,16 +31,17 @@ const Friend = ({friendId, name, subtitle} : Props) => {
 
   return (
     <div className="flex justify-between items-center pb-4">
-      <div className="flex justify-between items-center gap-4">
+      <div 
+        className="flex justify-between items-center gap-3 cursor-pointer" 
+        onClick={() => {
+          navigate(`/profile/${friendId}`)
+          navigate(0);
+        }}
+      >
         <div className="w-[50px] h-[50px] bg-gray-400 rounded-[50%]" />
-        <div 
-          onClick={() => {
-            navigate(`/profile/${friendId}`)
-            navigate(0);
-          }}
-        >
-          <p className="text-xl text-green-700 cursor-pointer">{name}</p>
-          <div>{subtitle}</div>
+        <div>
+          <p className="text-lg text-green-700 cursor-pointer">{name}</p>
+          <div className="text-gray-500">{subtitle}</div>
         </div>
       </div>
 

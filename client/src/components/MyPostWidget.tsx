@@ -26,7 +26,7 @@ const MyPostWidget = () => {
 
 
   return (
-    <div className="bg-primary rounded-2xl">
+    <div className="bg-primary rounded-2xl mb-5">
 
       <form className="p-5 flex flex-col gap-4 w-full" onSubmit={handleCreatePost}  >
         {/* TOP */}

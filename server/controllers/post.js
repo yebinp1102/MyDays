@@ -41,7 +41,8 @@ export const getFeedPosts = async(req, res) => {
 export const getUserPosts = async(req, res) => {
   try{
     const {userId} = req.params;
-    const post = await Post.findById({userId});
+    console.log(userId);
+    const post = await Post.find({userId});
     res.status(200).json(post);
   }catch(err){
     res.status(400).json({error: err.message, message: "Grabing user's posts failure"})
